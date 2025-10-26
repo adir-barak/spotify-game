@@ -201,3 +201,89 @@ button {
   font-size: 0.8em;
   color: #aaa;
 }
+
+/* --- Round Selection Styles --- */
+
+.round-selection-container {
+  margin: 25px 0;
+  padding: 15px;
+  background-color: var(--card-background);
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.round-selection-container h2 {
+  color: var(--primary-color);
+  font-size: 1.3em;
+  margin-top: 0;
+}
+
+.options-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.option-button {
+  background-color: #333;
+  color: var(--text-color);
+  padding: 8px 12px;
+  border: 2px solid #333;
+  flex-grow: 1;
+  min-width: 40%;
+  max-width: 48%;
+  font-size: 0.9em;
+}
+
+.option-button.selected {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  border-color: var(--primary-color);
+}
+
+.custom-input-group {
+  margin: 15px 0;
+  padding: 5px 0;
+  border-top: 1px solid #333;
+}
+
+.custom-input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9em;
+  color: #ccc;
+}
+
+.custom-input {
+  width: 90%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #555;
+  background-color: #2a2a2a;
+  color: var(--text-color);
+  font-size: 1em;
+  text-align: center;
+}
+
+.error-message {
+  color: var(--wrong-color);
+  font-weight: bold;
+  margin-top: 10px;
+  font-size: 0.9em;
+}
+
+.current-limit {
+  font-size: 1.1em;
+  margin-top: 15px;
+  font-weight: 500;
+}
+
+/* --- Game Screen Counter Adjustment --- */
+
+.round-counter {
+  /* Inserted between score and remaining songs */
+  font-size: 1.1em;
+  color: var(--primary-color);
+}

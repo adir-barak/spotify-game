@@ -3,7 +3,7 @@ import PartyPlaylistGame from '../GameLogic';
 import playlistData from '../assets/data/playlistData.json';
 import SongCard from './SongCard';
 
-const Game = ({ onEndGame }) => {
+const Game = ({ onEndGame, roundsLimit }) => {
     // Initialize game logic once
     const game = useMemo(() => new PartyPlaylistGame(
         playlistData.songs, 
@@ -12,26 +12,51 @@ const Game = ({ onEndGame }) => {
 
     const [currentSong, setCurrentSong] = useState(null);
     const [gameState, setGameState] = useState(game.gameState);
-    const [feedback, setFeedback] = useState(null); // { message, isCorrect }
+    const [feedback, setFeedback] = useState(null); // { message, isCorrect, guessedName }
     const [isGuessing, setIsGuessing] = useState(true);
+    const [currentRound, setCurrentRound] = useState(0);
 
     // Initial song selection on component mount
     useEffect(() => {
         nextRound();
     }, []);
 
+    const checkGameOver = (nextRoundNumber) => {
+        // End condition 1: All available songs are done
+        const allSongsExhausted = game.gameState.songsRemaining === 0;
+        
+        // End condition 2: Reached the round limit
+        const limitReached = roundsLimit > 0 && nextRoundNumber > roundsLimit;
+
+        return allSongsExhausted || limitReached;
+    }
+
     const nextRound = () => {
+        const nextRoundNumber = currentRound + 1;
+        
+        if (checkGameOver(nextRoundNumber)) {
+            // Game is over based on limit or exhausted songs
+            onEndGame({
+                finalScore: game.gameState.score,
+                history: game.gameHistory,
+                roundsPlayed: currentRound
+            });
+            return;
+        }
+
         const nextSong = game.selectSong();
         if (nextSong) {
             setCurrentSong(nextSong);
             setGameState(game.gameState);
             setFeedback(null);
             setIsGuessing(true);
+            setCurrentRound(nextRoundNumber);
         } else {
-            // Game is over
-            onEndGame({
+            // Game over due to running out of songs (safety check)
+             onEndGame({
                 finalScore: game.gameState.score,
-                history: game.gameHistory
+                history: game.gameHistory,
+                roundsPlayed: currentRound
             });
         }
     };
@@ -45,7 +70,8 @@ const Game = ({ onEndGame }) => {
         
         setFeedback({ 
             message: result.message, 
-            isCorrect: result.isCorrect 
+            isCorrect: result.isCorrect,
+            guessedName: result.guessedName
         });
         
         // Update the full game state to refresh the score
@@ -53,22 +79,25 @@ const Game = ({ onEndGame }) => {
     };
     
     // Show loading while data loads or initial song is selected
-    if (!currentSong && !gameState.gameOver) {
+    if (!currentSong && currentRound === 0) {
         return <div className="loading-screen">Loading Game...</div>;
     }
 
-    if (gameState.gameOver) {
-        // This is a safety check; should be handled by nextRound/onEndGame
-        return <div>Game Over!</div>;
+    if (checkGameOver(currentRound)) {
+        // Safety check: UI should transition to EndScreen immediately
+        return null;
     }
     
     const { score, songsRemaining } = gameState;
+    const isFinalRound = currentRound === roundsLimit;
+    const buttonText = isFinalRound ? "View Final Score" : "Next Song →";
     
     return (
         <div className="game-screen">
             <div className="score-header">
-                <span className="current-score">Score: 🏆 {score}</span>
-                <span className="songs-left">Songs Left: {songsRemaining}</span>
+                <span className="current-score">🏆 Score: {score}</span>
+                <span className="round-counter">Round {currentRound} / {roundsLimit}</span>
+                <span className="songs-left">Remaining: {songsRemaining}</span>
             </div>
             
             <SongCard 
@@ -80,7 +109,7 @@ const Game = ({ onEndGame }) => {
 
             {!isGuessing && (
                 <button className="next-button" onClick={nextRound}>
-                    {gameState.songsRemaining === 0 ? "View Final Score" : "Next Song →"}
+                    {buttonText}
                 </button>
             )}
         </div>

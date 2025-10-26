@@ -7,8 +7,10 @@ import './App.css'; // Minimal global styling
 function App() {
   const [gameState, setGameState] = useState('landing'); // 'landing', 'playing', 'ended'
   const [gameData, setGameData] = useState(null); // Stores final score/history
+  const [roundsLimit, setRoundsLimit] = useState(0); // New state for game length
 
-  const startGame = () => {
+  const startGame = (limit) => {
+    setRoundsLimit(limit);
     setGameState('playing');
   };
 
@@ -20,13 +22,14 @@ function App() {
   const resetGame = () => {
     setGameState('landing');
     setGameData(null);
+    setRoundsLimit(0);
   }
 
   // A simple, mobile-friendly container
   return (
     <div className="app-container">
       {gameState === 'landing' && <Landing onStartGame={startGame} />}
-      {gameState === 'playing' && <Game onEndGame={endGame} />}
+      {gameState === 'playing' && <Game onEndGame={endGame} roundsLimit={roundsLimit} />}
       {gameState === 'ended' && <EndScreen finalData={gameData} onRestart={resetGame} />}
     </div>
   );
