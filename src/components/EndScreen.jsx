@@ -10,7 +10,7 @@ const EndScreen = ({ finalData, onRestart }) => {
     return (
         <div className="screen-container end-screen">
             <h1 className="title">🎉 Game Over! 🎉</h1>
-            <p className="final-score">Your Final Score: **{finalScore}** points</p>
+            <p className="final-score">Your Final Score: {finalScore} points</p>
             
             <button className="start-button" onClick={onRestart}>
                 Play Again
@@ -27,9 +27,9 @@ const EndScreen = ({ finalData, onRestart }) => {
                 ) : (
                     wrongGuesses.map((item, index) => (
                         <li key={index} className="review-item">
-                            **{item.songTitle}** by {item.artists}
+                            {item.songTitle} by {item.artists}
                             <br/>
-                            Guessed: *{item.guessedName}* | Added By: **{item.correctName}**
+                            Guessed: {item.guessedName} | Added By: {item.correctName}
                         </li>
                     ))
                 )}
