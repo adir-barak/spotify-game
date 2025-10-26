@@ -47,11 +47,11 @@ const Landing = ({ onStartGame }) => {
     <div className="screen-container">
       <h1 className="title">🎶 Playlist Guesser 🎧</h1>
       <p className="description">
-        Welcome! Guess which friend added the song. Total songs available: **{totalSongs}**.
+        Welcome! Guess which friend added the song. Total songs available: {totalSongs}.
       </p>
       <ul className="rules-list">
-        <li>✅ Correct first guess: **+10 points**</li>
-        <li>🔁 Incorrect first guess: Song moves to the **Repeat Bucket**</li>
+        <li>✅ Correct first guess: +10 points</li>
+        <li>🔁 Incorrect first guess: Song moves to the Repeat Bucket</li>
       </ul>
       
       <div className="round-selection-container">
@@ -90,7 +90,7 @@ const Landing = ({ onStartGame }) => {
 
         {error && <p className="error-message">{error}</p>}
         <p className="current-limit">
-            Playing for **{roundsLimit}** rounds.
+            Playing for {roundsLimit} rounds.
         </p>
       </div>
 
