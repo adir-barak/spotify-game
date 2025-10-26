@@ -1,42 +1,203 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+:root {
+  --primary-color: #1db954; /* Spotify Green */
+  --background-color: #121212;
+  --text-color: #ffffff;
+  --card-background: #1d1d1d;
+  --wrong-color: #ff4d4d;
+  --correct-color: #38a169;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 500px; /* Mobile first max-width */
+  padding: 10px 15px; /* Reduced padding slightly to save space */
+  box-sizing: border-box;
+}
+
+/* --- Common UI Components --- */
+
+.screen-container {
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.title {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+  font-size: 1.8em;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em; /* Slightly smaller font for buttons */
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin: 5px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.start-button,
+.next-button {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  width: 90%;
+  margin: 15px auto; /* Reduced margin */
+  display: block;
 }
 
-.card {
-  padding: 2em;
+.start-button:hover,
+.next-button:hover {
+  background-color: #1ed760;
 }
 
-.read-the-docs {
-  color: #888;
+/* --- Game Screen --- */
+
+.score-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.song-card {
+  background-color: var(--card-background);
+  border-radius: 12px;
+  padding: 15px; /* Reduced padding */
+  margin-top: 5px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.repeat-ribbon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: gold;
+  color: var(--background-color);
+  padding: 5px 10px;
+  border-top-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  font-size: 0.8em;
+  font-weight: bold;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.album-art {
+  width: 150px; /* Smaller album art for mobile viewport */
+  height: 150px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.song-title {
+  font-size: 1.3em;
+  margin: 2px 0;
+}
+
+.song-artist-album {
+  color: #b3b3b3;
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+
+.audio-preview {
+  margin-bottom: 10px;
+}
+
+.audio-control {
+  width: 100%;
+  max-width: 300px; /* Constrain width of audio player */
+  height: 30px; /* Smaller height for mobile */
+}
+
+.guess-buttons-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px; /* Reduced gap */
+  margin-top: 15px;
+}
+
+.guess-button {
+  flex-grow: 1;
+  min-width: 45%; /* Ensures two buttons per row */
+  background-color: #333;
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.guess-button:hover:not(:disabled) {
+  background-color: #555;
+}
+
+/* Guess Feedback States */
+.guess-button.correct-answer {
+  background-color: var(--correct-color);
+  color: var(--background-color);
+}
+.guess-button.incorrect-guess {
+  background-color: var(--wrong-color);
+  color: var(--text-color);
+}
+.guess-button.disabled-button {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Toast Feedback */
+.feedback-toast {
+  margin-top: 10px;
+  padding: 8px; /* Reduced padding */
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.toast-correct {
+  background-color: var(--correct-color);
+}
+.toast-wrong {
+  background-color: var(--wrong-color);
+}
+
+/* --- End Screen --- */
+.end-screen h2 {
+  color: var(--primary-color);
+  margin-top: 20px;
+  border-bottom: 1px solid var(--card-background);
+  padding-bottom: 5px;
+  font-size: 1.4em;
+}
+
+.wrong-guesses-list {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+.review-item {
+  background-color: var(--card-background);
+  margin: 8px 0;
+  padding: 10px; /* Reduced padding */
+  border-radius: 8px;
+  border-left: 5px solid var(--wrong-color);
+  font-size: 0.9em;
+}
+.small-text {
+  font-size: 0.8em;
+  color: #aaa;
 }
